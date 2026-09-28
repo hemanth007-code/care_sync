@@ -1,0 +1,10 @@
+{
+	"name": "ls_azureKeyVault",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://scare.vault.azure.net/"
+		}
+	}
+}
