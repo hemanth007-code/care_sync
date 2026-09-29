@@ -60,7 +60,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat(activity('Lookup1').output.value[0].source_system, '/', activity('Lookup1').output.value[0].source_table_name, '/', variables('timestamps'))",
+							"value": "SELECT * FROM \"@{activity('Lookup1').output.value[0].source_schema_name}\".\"@{activity('Lookup1').output.value[0].source_table_name}\"",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
