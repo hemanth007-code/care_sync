@@ -1,0 +1,23 @@
+{
+	"name": "ls_azuresql",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "hems007.database.windows.net",
+			"database": "hems007",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "Hems",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_azureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "azuredb"
+			}
+		}
+	}
+}
