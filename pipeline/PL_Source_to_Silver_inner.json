@@ -60,7 +60,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@select * from @{activity('Lookup1').output.value.source_schema_name}",
+							"value": "SELECT * FROM [@{activity('Lookup1').output.firstRow.source_schema_name}].[@{activity('Lookup1').output.firstRow.source_table_name}] WHERE table_id = @{pipeline().parameters.table_id}",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
