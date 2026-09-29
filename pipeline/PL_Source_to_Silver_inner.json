@@ -32,10 +32,8 @@
 				}
 			},
 			{
-				"name": "Copy data1",
+				"name": "source_landing",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup1",
@@ -62,7 +60,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "select * from public.",
+							"value": "@select * from @{activity('Lookup1').output.value.source_schema_name}",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
