@@ -58,13 +58,9 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "SELECT * FROM \"@{activity('Lookup1').output.value[0].source_schema_name}\".\"@{activity('Lookup1').output.value[0].source_table_name}\"",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
+						"type": "PostgreSqlV2Source",
+						"query": "SELECT * FROM \"@{activity('Lookup1').output.value[0].source_schema_name}\".\"@{activity('Lookup1').output.value[0].source_table_name}\"",
+						"queryTimeout": "02:00:00"
 					},
 					"sink": {
 						"type": "ParquetSink",
@@ -87,7 +83,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_sqlaz",
+						"referenceName": "ds_postgres",
 						"type": "DatasetReference"
 					}
 				],
