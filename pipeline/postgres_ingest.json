@@ -48,7 +48,11 @@
 				"outputs": [
 					{
 						"referenceName": "ds_parquet",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "source",
+							"Folder": "Hospitals"
+						}
 					}
 				]
 			}
