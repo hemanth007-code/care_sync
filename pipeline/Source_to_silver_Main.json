@@ -1,9 +1,9 @@
 {
-	"name": "Source_to_silver",
+	"name": "Source_to_silver_Main",
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "Lookup_readtables",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
