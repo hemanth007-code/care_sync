@@ -34,6 +34,8 @@
 			{
 				"name": "Copy data1",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup1",
@@ -57,8 +59,23 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "select * from public.",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
 					"enableStaging": false
-				}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sqlaz",
+						"type": "DatasetReference"
+					}
+				]
 			},
 			{
 				"name": "Set variable1",
@@ -72,7 +89,7 @@
 				"typeProperties": {
 					"variableName": "timestamps",
 					"value": {
-						"value": "@utcNow()",
+						"value": "@formatDateTime(utcNow(),'yyyy-MM-dd_hh:mm:ss')",
 						"type": "Expression"
 					}
 				}
