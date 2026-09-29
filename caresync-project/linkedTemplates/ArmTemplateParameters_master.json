@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "caresync-project"
+		},
+		"PostgreSql1_properties_typeProperties_server": {
+			"value": "ep-plain-cherry-b4a1ecky-pooler.c-6.us-east-2.aws.neon.tech"
+		},
+		"PostgreSql1_properties_typeProperties_database": {
+			"value": "neondb"
+		},
+		"PostgreSql1_properties_typeProperties_username": {
+			"value": "neondb_owner"
+		},
+		"ls_adls_properties_typeProperties_url": {
+			"value": "https://caresstore.dfs.core.windows.net/"
+		},
+		"ls_azureKeyVault_properties_typeProperties_baseUrl": {
+			"value": "https://scare.vault.azure.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
