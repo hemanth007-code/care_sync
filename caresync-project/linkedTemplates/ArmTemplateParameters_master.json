@@ -20,6 +20,15 @@
 		"ls_azureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://scare.vault.azure.net/"
 		},
+		"ls_azuresql_properties_typeProperties_server": {
+			"value": "hems007.database.windows.net"
+		},
+		"ls_azuresql_properties_typeProperties_database": {
+			"value": "hems007"
+		},
+		"ls_azuresql_properties_typeProperties_userName": {
+			"value": "Hems"
+		},
 		"containerUri": {
 			"value": ""
 		},

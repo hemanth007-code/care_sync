@@ -27,6 +27,18 @@
 			"type": "string",
 			"defaultValue": "https://scare.vault.azure.net/"
 		},
+		"ls_azuresql_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "hems007.database.windows.net"
+		},
+		"ls_azuresql_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "hems007"
+		},
+		"ls_azuresql_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Hems"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -68,6 +80,15 @@
 					},
 					"PostgreSql1_properties_typeProperties_username": {
 						"value": "[parameters('PostgreSql1_properties_typeProperties_username')]"
+					},
+					"ls_azuresql_properties_typeProperties_server": {
+						"value": "[parameters('ls_azuresql_properties_typeProperties_server')]"
+					},
+					"ls_azuresql_properties_typeProperties_database": {
+						"value": "[parameters('ls_azuresql_properties_typeProperties_database')]"
+					},
+					"ls_azuresql_properties_typeProperties_userName": {
+						"value": "[parameters('ls_azuresql_properties_typeProperties_userName')]"
 					}
 				}
 			},

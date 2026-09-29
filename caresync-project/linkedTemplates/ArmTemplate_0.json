@@ -26,6 +26,18 @@
 		"PostgreSql1_properties_typeProperties_username": {
 			"type": "string",
 			"defaultValue": "neondb_owner"
+		},
+		"ls_azuresql_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "hems007.database.windows.net"
+		},
+		"ls_azuresql_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "hems007"
+		},
+		"ls_azuresql_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Hems"
 		}
 	},
 	"variables": {
@@ -55,6 +67,18 @@
 				"typeProperties": {
 					"baseUrl": "[parameters('ls_azureKeyVault_properties_typeProperties_baseUrl')]"
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -123,6 +147,34 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_adls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_azuresql')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_azuresql_properties_typeProperties_server')]",
+					"database": "[parameters('ls_azuresql_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_azuresql_properties_typeProperties_userName')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_azureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "azuredb"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azureKeyVault')]"
 			]
 		},
 		{
