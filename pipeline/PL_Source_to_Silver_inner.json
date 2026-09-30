@@ -117,6 +117,47 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Landing_to_Silver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "source_landing",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/azurepractice1k@gmail.com/care_sync_databricks/bronze_ingest/Landing_to_bronze",
+					"baseParameters": {
+						"source_system": {
+							"value": "@activity('Lookup1').output.value[0].source_system",
+							"type": "Expression"
+						},
+						"landing_timestamp": {
+							"value": "@variables('timestamps')",
+							"type": "Expression"
+						},
+						"table_name": {
+							"value": "@activity('Lookup1').output.value[0].bronze_table_name",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azuredatabricks",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"parameters": {
