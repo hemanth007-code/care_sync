@@ -107,13 +107,9 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "@concat(activity('Lookup1').output.value[0].source_system, '/', activity('Lookup1').output.value[0].source_table_name, '/', variables('timestamps'))",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
+								"type": "PostgreSqlV2Source",
+								"query": "SELECT * FROM \"@{activity('Lookup1').output.value[0].source_schema_name}\".\"@{activity('Lookup1').output.value[0].source_table_name}\"",
+								"queryTimeout": "02:00:00"
 							},
 							"sink": {
 								"type": "ParquetSink",
@@ -136,7 +132,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "ds_sqlaz",
+								"referenceName": "ds_postgres",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -191,6 +187,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_sqlaz')]",
+				"[concat(variables('factoryId'), '/datasets/ds_postgres')]",
 				"[concat(variables('factoryId'), '/datasets/ds_parquet')]"
 			]
 		},
