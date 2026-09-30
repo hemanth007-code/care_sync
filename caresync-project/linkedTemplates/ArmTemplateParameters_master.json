@@ -29,6 +29,9 @@
 		"ls_azuresql_properties_typeProperties_userName": {
 			"value": "Hems"
 		},
+		"ls_azuredatabricks_properties_typeProperties_existingClusterId": {
+			"value": "0930-170719-8fm13grg"
+		},
 		"containerUri": {
 			"value": ""
 		},

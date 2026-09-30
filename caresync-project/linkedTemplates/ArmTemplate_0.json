@@ -38,6 +38,10 @@
 		"ls_azuresql_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "Hems"
+		},
+		"ls_azuredatabricks_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0930-170719-8fm13grg"
 		}
 	},
 	"variables": {
@@ -159,6 +163,30 @@
 						},
 						"secretName": "azuredb"
 					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azureKeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_azuredatabricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-7405605982001609.9.azuredatabricks.net",
+					"accessToken": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_azureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "databricks"
+					},
+					"existingClusterId": "[parameters('ls_azuredatabricks_properties_typeProperties_existingClusterId')]"
 				}
 			},
 			"dependsOn": [
@@ -324,6 +352,61 @@
 								"type": "Expression"
 							}
 						}
+					},
+					{
+						"name": "Landing_to_Silver",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "source_landing",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/azurepractice1k@gmail.com/care_sync_databricks/bronze_ingest/Landing_to_bronze",
+							"baseParameters": {
+								"source_system": {
+									"value": "@activity('Lookup1').output.value[0].source_system",
+									"type": "Expression"
+								},
+								"landing_timestamp": {
+									"value": "@variables('timestamps')",
+									"type": "Expression"
+								},
+								"table_name": {
+									"value": "@activity('Lookup1').output.value[0].bronze_table_name",
+									"type": "Expression"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_azuredatabricks",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Notebook1",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {}
 					}
 				],
 				"policy": {
@@ -345,7 +428,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_sqlaz')]",
 				"[concat(variables('factoryId'), '/datasets/ds_postgres')]",
-				"[concat(variables('factoryId'), '/datasets/ds_parquet')]"
+				"[concat(variables('factoryId'), '/datasets/ds_parquet')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_azuredatabricks')]"
 			]
 		},
 		{
