@@ -109,7 +109,7 @@
 							}
 						},
 						{
-							"name": "Insert_Inprogress-status_copy1",
+							"name": "Insert_failed_status",
 							"type": "Script",
 							"dependsOn": [
 								{
@@ -145,7 +145,7 @@
 							}
 						},
 						{
-							"name": "Insert_Inprogress-status_copy1_copy1",
+							"name": "Insert_success_status",
 							"type": "Script",
 							"dependsOn": [
 								{
