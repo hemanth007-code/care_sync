@@ -27,6 +27,10 @@
 			"type": "string",
 			"defaultValue": "https://scare.vault.azure.net/"
 		},
+		"ls_azuredatabricks_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0930-170719-8fm13grg"
+		},
 		"ls_azuresql_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "hems007.database.windows.net"
@@ -38,10 +42,6 @@
 		"ls_azuresql_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "Hems"
-		},
-		"ls_azuredatabricks_properties_typeProperties_existingClusterId": {
-			"type": "string",
-			"defaultValue": "0930-170719-8fm13grg"
 		},
 		"containerUri": {
 			"type": "string",
@@ -85,6 +85,9 @@
 					"PostgreSql1_properties_typeProperties_username": {
 						"value": "[parameters('PostgreSql1_properties_typeProperties_username')]"
 					},
+					"ls_azuredatabricks_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('ls_azuredatabricks_properties_typeProperties_existingClusterId')]"
+					},
 					"ls_azuresql_properties_typeProperties_server": {
 						"value": "[parameters('ls_azuresql_properties_typeProperties_server')]"
 					},
@@ -93,9 +96,6 @@
 					},
 					"ls_azuresql_properties_typeProperties_userName": {
 						"value": "[parameters('ls_azuresql_properties_typeProperties_userName')]"
-					},
-					"ls_azuredatabricks_properties_typeProperties_existingClusterId": {
-						"value": "[parameters('ls_azuredatabricks_properties_typeProperties_existingClusterId')]"
 					}
 				}
 			},

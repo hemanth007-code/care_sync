@@ -20,6 +20,9 @@
 		"ls_azureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://scare.vault.azure.net/"
 		},
+		"ls_azuredatabricks_properties_typeProperties_existingClusterId": {
+			"value": "0930-170719-8fm13grg"
+		},
 		"ls_azuresql_properties_typeProperties_server": {
 			"value": "hems007.database.windows.net"
 		},
@@ -28,9 +31,6 @@
 		},
 		"ls_azuresql_properties_typeProperties_userName": {
 			"value": "Hems"
-		},
-		"ls_azuredatabricks_properties_typeProperties_existingClusterId": {
-			"value": "0930-170719-8fm13grg"
 		}
 	}
 }
