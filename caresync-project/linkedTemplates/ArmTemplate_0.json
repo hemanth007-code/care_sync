@@ -433,6 +433,42 @@
 							"referenceName": "ls_azuredatabricks",
 							"type": "LinkedServiceReference"
 						}
+					},
+					{
+						"name": "Update_success",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Bronze_to_silver",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "ls_azuresql",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": {
+										"value": "UPDATE ctrl.audit_log\nSET status='SUCCESS',end_time=SYSDATETIME(),records_written=@{activity('Bronze_to_silver').output.runOutput}\nwhere adf_run_id='@{pipeline().parameters.adf_run_id}'  and table_id='@{pipeline().parameters.table_id}'",
+										"type": "Expression"
+									}
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
 					}
 				],
 				"policy": {
@@ -442,6 +478,10 @@
 					"table_id": {
 						"type": "string",
 						"defaultValue": "1"
+					},
+					"adf_run_id": {
+						"type": "string",
+						"defaultValue": "a1"
 					}
 				},
 				"variables": {
@@ -455,7 +495,8 @@
 				"[concat(variables('factoryId'), '/datasets/ds_sqlaz')]",
 				"[concat(variables('factoryId'), '/datasets/ds_postgres')]",
 				"[concat(variables('factoryId'), '/datasets/ds_parquet')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_azuredatabricks')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_azuredatabricks')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_azuresql')]"
 			]
 		},
 		{
@@ -644,7 +685,7 @@
 									}
 								},
 								{
-									"name": "Insert_Inprogress-status_copy1",
+									"name": "Insert_failed_status",
 									"type": "Script",
 									"dependsOn": [
 										{
@@ -680,7 +721,7 @@
 									}
 								},
 								{
-									"name": "Insert_Inprogress-status_copy1_copy1",
+									"name": "Insert_success_status",
 									"type": "Script",
 									"dependsOn": [
 										{
@@ -707,7 +748,7 @@
 											{
 												"type": "Query",
 												"text": {
-													"value": "UPDATE ctrl.audit_log\nSET status='FAILED' ,end_time=SYSDATETIME()\nwhere adf_run_id='@{pipeline().parameters.adf_run_id}' and table_id=@{item().table_id}",
+													"value": "UPDATE ctrl.audit_log\nSET status='SUCCESS' ,end_time=SYSDATETIME()\nwhere adf_run_id='@{pipeline().parameters.adf_run_id}' and table_id=@{item().table_id}",
 													"type": "Expression"
 												}
 											}
@@ -729,7 +770,7 @@
 					},
 					"adf_run_id": {
 						"type": "string",
-						"defaultValue": "a1"
+						"defaultValue": "a3"
 					}
 				},
 				"variables": {
