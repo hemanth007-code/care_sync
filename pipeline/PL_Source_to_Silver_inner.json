@@ -36,7 +36,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "If Condition1",
+						"activity": "Check load type",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -230,7 +230,7 @@
 				}
 			},
 			{
-				"name": "If Condition1",
+				"name": "Check load type",
 				"type": "IfCondition",
 				"dependsOn": [
 					{
@@ -246,7 +246,13 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Lookup1').output.value[0].load_type,'FULL')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
