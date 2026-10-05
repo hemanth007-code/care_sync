@@ -135,7 +135,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "",
+					"notebookPath": "/Users/azurepractice1k@gmail.com/care_sync_databricks/bronze_ingest/Landing_to_bronze",
 					"baseParameters": {
 						"source_system": {
 							"value": "@activity('Lookup1').output.value[0].source_system",
