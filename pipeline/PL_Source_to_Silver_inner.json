@@ -28,12 +28,14 @@
 						"referenceName": "ds_sqlaz",
 						"type": "DatasetReference"
 					},
-					"firstRowOnly": false
+					"firstRowOnly": true
 				}
 			},
 			{
 				"name": "source_landing",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Check load type",
@@ -249,7 +251,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@not(equals(activity('Lookup1').output.value[0].load_type,'FULL'))",
+						"value": "@not(equals(activity('Lookup1').output.firstRow.load_type,'FULL'))",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
