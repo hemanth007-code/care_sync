@@ -138,7 +138,7 @@
 					"notebookPath": "/Users/azurepractice1k@gmail.com/care_sync_databricks/bronze_ingest/Landing_to_bronze",
 					"baseParameters": {
 						"source_system": {
-							"value": "@activity('Lookup1').output.value[0].source_system",
+							"value": "@activity('Lookup1').output.firstRow.source_system",
 							"type": "Expression"
 						},
 						"landing_timestamp": {
@@ -146,7 +146,7 @@
 							"type": "Expression"
 						},
 						"table_name": {
-							"value": "@activity('Lookup1').output.value[0].bronze_table_name",
+							"value": "@activity('Lookup1').output.firstRow.bronze_table_name",
 							"type": "Expression"
 						}
 					}
