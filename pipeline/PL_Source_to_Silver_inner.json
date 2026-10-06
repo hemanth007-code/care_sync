@@ -179,7 +179,7 @@
 					"notebookPath": "/Users/azurepractice1k@gmail.com/care_sync_databricks/Silver_ingest/bronze_to_silver",
 					"baseParameters": {
 						"table_name": {
-							"value": "@activity('Lookup1').output.value[0].silver_table_name",
+							"value": "@activity('Lookup1').output.firstRow.silver_table_name",
 							"type": "Expression"
 						},
 						"landing_timestamp": {
