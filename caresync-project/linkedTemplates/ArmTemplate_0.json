@@ -414,11 +414,19 @@
 							"notebookPath": "/Users/azurepractice1k@gmail.com/care_sync_databricks/Silver_ingest/bronze_to_silver",
 							"baseParameters": {
 								"table_name": {
-									"value": "@activity('Lookup1').output.value[0].silver_table_name",
+									"value": "@activity('Lookup1').output.firstRow.silver_table_name",
 									"type": "Expression"
 								},
 								"landing_timestamp": {
 									"value": "@variables('timestamps')",
+									"type": "Expression"
+								},
+								"load_type": {
+									"value": "@activity('Lookup1').output.firstRow.load_type",
+									"type": "Expression"
+								},
+								"merge_keys": {
+									"value": "@coalesce(activity('Lookup1').output.firstRow.merge_keys,'')",
 									"type": "Expression"
 								}
 							}
@@ -539,6 +547,56 @@
 											"value": "@activity('Read Watermark').output.firstRow.watermark_value",
 											"type": "Expression"
 										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Check loadtype and updatewatermark",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Bronze_to_silver",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@not(equals(activity('Lookup1').output.firstRow.load_type,'FULL'))",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "Set_watermark",
+									"type": "Script",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "ls_azuresql",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "Query",
+												"text": {
+													"value": "update ctrl.watermark\nSET watermark_value=SYSUTCDATETIME()\nWHERE table_id=@{pipeline().parameters.table_id}",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
 									}
 								}
 							]
@@ -847,7 +905,7 @@
 					},
 					"adf_run_id": {
 						"type": "string",
-						"defaultValue": "a3"
+						"defaultValue": "a5"
 					}
 				},
 				"variables": {
