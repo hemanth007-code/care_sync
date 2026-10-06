@@ -185,6 +185,14 @@
 						"landing_timestamp": {
 							"value": "@variables('timestamps')",
 							"type": "Expression"
+						},
+						"load_type": {
+							"value": "@activity('Lookup1').output.firstRow.load_type",
+							"type": "Expression"
+						},
+						"merge_keys": {
+							"value": "@coalesce(activity('Lookup1').output.firstRow.merge_keys,'')",
+							"type": "Expression"
 						}
 					}
 				},
