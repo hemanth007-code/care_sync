@@ -53,7 +53,7 @@
 				"type": "DatabricksNotebook",
 				"dependsOn": [
 					{
-						"activity": "Switch1",
+						"activity": "Check sourcesystem",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -300,7 +300,7 @@
 				}
 			},
 			{
-				"name": "Switch1",
+				"name": "Check sourcesystem",
 				"type": "Switch",
 				"dependsOn": [
 					{
