@@ -412,7 +412,6 @@
 													"value": "@variables('watermark_value')",
 													"type": "Expression"
 												},
-												"wildcardFileName": "*",
 												"deleteFilesAfterCompletion": false
 											},
 											"formatSettings": {
