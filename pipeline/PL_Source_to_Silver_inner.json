@@ -462,7 +462,7 @@
 		"parameters": {
 			"table_id": {
 				"type": "string",
-				"defaultValue": "5"
+				"defaultValue": "4"
 			},
 			"adf_run_id": {
 				"type": "string",
