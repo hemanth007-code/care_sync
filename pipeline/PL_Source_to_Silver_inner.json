@@ -434,21 +434,19 @@
 												"folder": {
 													"value": "@activity('Lookup1').output.firstRow.source_path",
 													"type": "Expression"
-												},
-												"container": "source"
+												}
 											}
 										}
 									],
 									"outputs": [
 										{
-											"referenceName": "Binary1",
+											"referenceName": "Binary2",
 											"type": "DatasetReference",
 											"parameters": {
 												"folder": {
-													"value": "@concat(activity('Lookup1').output.firstRow.source_system, '/', activity('Lookup1').output.firstRow.source_table_name, '/', variables('timestamps'))",
+													"value": "@activity('Lookup1').output.firstRow.source_path",
 													"type": "Expression"
-												},
-												"container": "landing"
+												}
 											}
 										}
 									]
