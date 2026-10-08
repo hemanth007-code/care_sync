@@ -406,9 +406,8 @@
 											"type": "BinarySource",
 											"storeSettings": {
 												"type": "AzureBlobFSReadSettings",
-												"recursive": true,
-												"modifiedDatetimeStart": "2026-10-06T04:00:00.000Z",
-												"modifiedDatetimeEnd": {
+												"recursive": false,
+												"modifiedDatetimeStart": {
 													"value": "@variables('watermark_value')",
 													"type": "Expression"
 												},
