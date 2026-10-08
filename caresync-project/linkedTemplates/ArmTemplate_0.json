@@ -75,6 +75,68 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Binary1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"fileSystem": "source"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"fileSystem": "landing"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_parquet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -108,6 +170,43 @@
 					"compressionCodec": "snappy"
 				},
 				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/source_ds')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string"
+					},
+					"folder": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container",
+							"type": "Expression"
+						}
+					}
+				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_adls')]"
@@ -194,7 +293,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Binary1')]",
+			"name": "[concat(parameters('factoryName'), '/ds_landing')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -204,6 +303,9 @@
 				},
 				"parameters": {
 					"folder": {
+						"type": "string"
+					},
+					"container": {
 						"type": "string"
 					}
 				},
@@ -216,38 +318,10 @@
 							"value": "@dataset().folder",
 							"type": "Expression"
 						},
-						"fileSystem": "source"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_adls')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Binary2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_adls",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": {
-							"value": "@dataset().folder",
+						"fileSystem": {
+							"value": "@dataset().container",
 							"type": "Expression"
-						},
-						"fileSystem": "landiing"
+						}
 					}
 				}
 			},
@@ -688,12 +762,12 @@
 									"value": "adls_csv",
 									"activities": [
 										{
-											"name": "Ingest_CSV_source_to_landing",
+											"name": "Ingest_csv_souce_landing",
 											"type": "Copy",
 											"dependsOn": [],
 											"policy": {
 												"timeout": "0.12:00:00",
-												"retry": 0,
+												"retry": 3,
 												"retryIntervalInSeconds": 30,
 												"secureOutput": false,
 												"secureInput": false
@@ -704,9 +778,8 @@
 													"type": "BinarySource",
 													"storeSettings": {
 														"type": "AzureBlobFSReadSettings",
-														"recursive": true,
-														"modifiedDatetimeStart": "2026-10-05T03:00:00.000Z",
-														"modifiedDatetimeEnd": {
+														"recursive": false,
+														"modifiedDatetimeStart": {
 															"value": "@variables('watermark_value')",
 															"type": "Expression"
 														},
@@ -726,9 +799,10 @@
 											},
 											"inputs": [
 												{
-													"referenceName": "Binary1",
+													"referenceName": "source_ds",
 													"type": "DatasetReference",
 													"parameters": {
+														"container": "source",
 														"folder": {
 															"value": "@activity('Lookup1').output.firstRow.source_path",
 															"type": "Expression"
@@ -738,11 +812,15 @@
 											],
 											"outputs": [
 												{
-													"referenceName": "Binary2",
+													"referenceName": "ds_landing",
 													"type": "DatasetReference",
 													"parameters": {
 														"folder": {
-															"value": "@activity('Lookup1').output.firstRow.source_path",
+															"value": "@concat(activity('Lookup1').output.firstRow.source_system, '/', activity('Lookup1').output.firstRow.source_table_name, '/', variables('timestamps'))",
+															"type": "Expression"
+														},
+														"container": {
+															"value": "landing",
 															"type": "Expression"
 														}
 													}
@@ -784,8 +862,8 @@
 				"[concat(variables('factoryId'), '/linkedServices/ls_azuresql')]",
 				"[concat(variables('factoryId'), '/datasets/ds_postgres')]",
 				"[concat(variables('factoryId'), '/datasets/ds_parquet')]",
-				"[concat(variables('factoryId'), '/datasets/Binary1')]",
-				"[concat(variables('factoryId'), '/datasets/Binary2')]"
+				"[concat(variables('factoryId'), '/datasets/source_ds')]",
+				"[concat(variables('factoryId'), '/datasets/ds_landing')]"
 			]
 		},
 		{
