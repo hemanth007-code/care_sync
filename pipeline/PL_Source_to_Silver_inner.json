@@ -413,6 +413,12 @@
 												"type": "BinaryReadSettings"
 											}
 										},
+										"sink": {
+											"type": "BinarySink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											}
+										},
 										"enableStaging": false
 									},
 									"inputs": [
@@ -420,8 +426,18 @@
 											"referenceName": "source_ds",
 											"type": "DatasetReference",
 											"parameters": {
-												"container": "source"
+												"container": "source",
+												"folder": {
+													"value": "@activity('Lookup1').output.firstRow.source_path",
+													"type": "Expression"
+												}
 											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_landing",
+											"type": "DatasetReference"
 										}
 									]
 								}
