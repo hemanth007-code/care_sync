@@ -444,7 +444,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"folder": {
-													"value": "@activity('Lookup1').output.firstRow.source_path",
+													"value": "@concat(activity('Lookup1').output.firstRow.source_system, '/', activity('Lookup1').output.firstRow.source_table_name, '/', variables('timestamps'))",
 													"type": "Expression"
 												}
 											}
