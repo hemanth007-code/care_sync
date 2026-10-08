@@ -8,6 +8,9 @@
 		"parameters": {
 			"folder": {
 				"type": "string"
+			},
+			"container": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -19,7 +22,10 @@
 					"value": "@dataset().folder",
 					"type": "Expression"
 				},
-				"fileSystem": "landing"
+				"fileSystem": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
 			}
 		}
 	}
