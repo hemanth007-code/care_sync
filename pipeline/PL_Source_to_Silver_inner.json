@@ -433,7 +433,7 @@
 											"parameters": {
 												"container": "source",
 												"folder": {
-													"value": "@activity('Lookup1').output.firstRow.source_path",
+													"value": "lab_results",
 													"type": "Expression"
 												}
 											}
