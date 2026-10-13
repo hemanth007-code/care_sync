@@ -186,10 +186,6 @@
 			}
 		],
 		"parameters": {
-			"source_system": {
-				"type": "string",
-				"defaultValue": "adls_csv"
-			},
 			"adf_run_id": {
 				"type": "string",
 				"defaultValue": "a8"
