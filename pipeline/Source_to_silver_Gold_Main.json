@@ -84,7 +84,7 @@
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "Landing_to_Silver",
+									"activity": "Silver to gold",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -120,7 +120,7 @@
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "Landing_to_Silver",
+									"activity": "Silver to gold",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -152,7 +152,7 @@
 							}
 						},
 						{
-							"name": "Landing_to_Silver",
+							"name": "Silver to gold",
 							"type": "DatabricksNotebook",
 							"dependsOn": [
 								{
@@ -174,24 +174,6 @@
 								"notebookPath": {
 									"value": "/Workspace/Users/azurepractice1k@gmail.com/care_sync_databricks/Gold/NB_@{item().gold_table_name}",
 									"type": "Expression"
-								},
-								"baseParameters": {
-									"source_system": {
-										"value": "@activity('Lookup1').output.firstRow.source_system",
-										"type": "Expression"
-									},
-									"landing_timestamp": {
-										"value": "@variables('timestamps')",
-										"type": "Expression"
-									},
-									"table_name": {
-										"value": "@activity('Lookup1').output.firstRow.bronze_table_name",
-										"type": "Expression"
-									},
-									"source_file_format": {
-										"value": "@coalesce(activity('Lookup1').output.firstRow.source_file_format,'')",
-										"type": "Expression"
-									}
 								}
 							},
 							"linkedServiceName": {
