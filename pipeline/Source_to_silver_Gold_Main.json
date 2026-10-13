@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT table_id FROM ctrl.table_config WHERE is_active = 1 AND stage ='SILVER_TO_GOLD'",
+							"value": "SELECT table_id,gold_table_name FROM ctrl.table_config WHERE is_active = 1 AND stage ='SILVER_TO_GOLD'",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -34,6 +34,8 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup_readtables",
