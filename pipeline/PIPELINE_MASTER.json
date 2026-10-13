@@ -5,6 +5,8 @@
 			{
 				"name": "Source_to_silver_postgres",
 				"type": "ExecutePipeline",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"secureInput": false
