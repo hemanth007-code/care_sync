@@ -49,17 +49,17 @@
 				}
 			},
 			{
-				"name": "Source_to_silver_postgres_copy1_copy1",
+				"name": "silver_to_Gold",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Source_to_silver_ADLS_CSV",
+						"activity": "Source_to_silver_postgres",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "Source_to_silver_postgres",
+						"activity": "Source_to_silver_ADLS_CSV",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -71,12 +71,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "Source_to_silver_Main",
+						"referenceName": "Source_to_silver_Gold_Main",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"source_system": "adls_csv",
 						"adf_run_id": {
 							"value": "@pipeline().RunId",
 							"type": "Expression"
