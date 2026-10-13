@@ -116,42 +116,6 @@
 							}
 						},
 						{
-							"name": "Insert_success_status",
-							"type": "Script",
-							"dependsOn": [
-								{
-									"activity": "Silver to gold",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"linkedServiceName": {
-								"referenceName": "ls_azuresql",
-								"type": "LinkedServiceReference"
-							},
-							"typeProperties": {
-								"scripts": [
-									{
-										"type": "Query",
-										"text": {
-											"value": "UPDATE ctrl.audit_log\nSET status='SUCCESS' ,end_time=SYSDATETIME()\nwhere adf_run_id='@{pipeline().parameters.adf_run_id}' and table_id=@{item().table_id}",
-											"type": "Expression"
-										}
-									}
-								],
-								"scriptBlockExecutionTimeout": "02:00:00"
-							}
-						},
-						{
 							"name": "Silver to gold",
 							"type": "DatabricksNotebook",
 							"dependsOn": [
@@ -179,6 +143,42 @@
 							"linkedServiceName": {
 								"referenceName": "ls_azuredatabricks",
 								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Update_success",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "Silver to gold",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "ls_azuresql",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": {
+											"value": "UPDATE ctrl.audit_log\nSET status='SUCCESS',end_time=SYSDATETIME(),records_written=@{activity('Silver to gold').output.runOutput}\nwhere adf_run_id='@{pipeline().parameters.adf_run_id}'  and table_id=@{item().table_id}",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
 							}
 						}
 					]
