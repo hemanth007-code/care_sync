@@ -34,8 +34,6 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup_readtables",
@@ -52,35 +50,6 @@
 					},
 					"isSequential": true,
 					"activities": [
-						{
-							"name": "Execute Pipeline1",
-							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "Insert_Inprogress-status",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "PL_Source_to_Silver_inner",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"table_id": {
-										"value": "@item().table_id",
-										"type": "Expression"
-									}
-								}
-							}
-						},
 						{
 							"name": "Insert_Inprogress-status",
 							"type": "Script",
@@ -115,7 +84,7 @@
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "Execute Pipeline1",
+									"activity": "Landing_to_Silver",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -151,7 +120,7 @@
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "Execute Pipeline1",
+									"activity": "Landing_to_Silver",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -180,6 +149,54 @@
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						},
+						{
+							"name": "Landing_to_Silver",
+							"type": "DatabricksNotebook",
+							"dependsOn": [
+								{
+									"activity": "Insert_Inprogress-status",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": {
+									"value": "/Workspace/Users/azurepractice1k@gmail.com/care_sync_databricks/Gold/NB_@{item().gold_table_name}",
+									"type": "Expression"
+								},
+								"baseParameters": {
+									"source_system": {
+										"value": "@activity('Lookup1').output.firstRow.source_system",
+										"type": "Expression"
+									},
+									"landing_timestamp": {
+										"value": "@variables('timestamps')",
+										"type": "Expression"
+									},
+									"table_name": {
+										"value": "@activity('Lookup1').output.firstRow.bronze_table_name",
+										"type": "Expression"
+									},
+									"source_file_format": {
+										"value": "@coalesce(activity('Lookup1').output.firstRow.source_file_format,'')",
+										"type": "Expression"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_azuredatabricks",
+								"type": "LinkedServiceReference"
 							}
 						}
 					]
