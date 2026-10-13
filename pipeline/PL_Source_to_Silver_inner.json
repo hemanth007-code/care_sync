@@ -28,7 +28,7 @@
 						"referenceName": "ds_sqlaz",
 						"type": "DatasetReference"
 					},
-					"firstRowOnly": true
+					"firstRowOnly": false
 				}
 			},
 			{
