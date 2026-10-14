@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "Read all tables status",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -13,9 +13,72 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "select * from ctrl.audit_log where adf_run_id='@{pipeline().parameters.adf_run_id}'\n",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqlaz",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Prepare Email Header",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "body header",
+					"value": {
+						"value": "Ingestion and transformation process has been completed for care_sync project has been completed and below is the status",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Prepare Email Footer body",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "body header",
+					"value": {
+						"value": "For any support please contact azurepractice1k@gmail.com",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"parameters": {
+			"adf_run_id": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"body header": {
+				"type": "String"
+			},
+			"footer": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
