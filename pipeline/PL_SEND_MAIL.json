@@ -180,6 +180,9 @@
 				"userProperties": [],
 				"typeProperties": {
 					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
 					"url": "https://prod-19.centralus.logic.azure.com:443/workflows/e9c52d2d706642c19ed95152120de364/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=J0Tjs5OvlkE9lnIQEeg-5dqWOKu0-u1yI0wV-i58HI0",
 					"body": {
 						"value": "@variables('logic_apps_body')",
