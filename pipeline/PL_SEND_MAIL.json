@@ -64,11 +64,64 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Email Subject",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Check overall failed count",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "email_subject",
+					"value": {
+						"value": "@{pipeline().globalParameters.env} |@|CARE_SYNC MASTER RUN",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Check overall failed count",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "select count(*) as count\nfrom ctrl.audit_log\nwhere adf_run_id= @{pipeline().parameters.adf_run_id} and status!='SUCCESS'",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqlaz",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"parameters": {
 			"adf_run_id": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "5b655a9b-376c-4cda-b64f-36fa424f8b47"
 			}
 		},
 		"variables": {
@@ -76,6 +129,9 @@
 				"type": "String"
 			},
 			"footer": {
+				"type": "String"
+			},
+			"email_subject": {
 				"type": "String"
 			}
 		},
