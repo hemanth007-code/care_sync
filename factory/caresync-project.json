@@ -1,0 +1,12 @@
+{
+	"name": "caresync-project",
+	"properties": {
+		"globalParameters": {
+			"email_receipient": {
+				"type": "string",
+				"value": "azurepractice1k@gmail.com"
+			}
+		}
+	},
+	"location": "centralus"
+}
