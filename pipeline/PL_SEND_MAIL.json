@@ -116,6 +116,48 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "Email Logic apps",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Prepare Email Header",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Prepare Email Footer body",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Read all tables status",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Email Subject",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "logic_apps_body",
+					"value": {
+						"value": "{\n\n\"subject\":\"@{variables('email_subject')}\",\n\"email_receipients\":\"@{pipeline().globalParameters.email_receipient}\",\n\"body_header\":\"@{variables('body header')}\",\n\"body_footer\":\"@{variables('footer')}\",\n\"status_table\":activity('Read all tables status').output.value\n}",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -132,6 +174,9 @@
 				"type": "String"
 			},
 			"email_subject": {
+				"type": "String"
+			},
+			"logic_apps_body": {
 				"type": "String"
 			}
 		},
