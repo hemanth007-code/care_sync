@@ -1,0 +1,25 @@
+{
+	"name": "Caresync_Trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PIPELINE_MASTER",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 24,
+				"startTime": "2026-10-14T21:21:00",
+				"endTime": "2026-11-18T21:21:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
