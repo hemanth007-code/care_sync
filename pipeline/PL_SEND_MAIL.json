@@ -84,7 +84,7 @@
 				"typeProperties": {
 					"variableName": "email_subject",
 					"value": {
-						"value": "@{pipeline().globalParameters.env} |@{if(greater(activity('Check overall failed count').output.firstRow.count,0),'FAIL','SUCCESS')}|CARE_SYNC MASTER RUN",
+						"value": "@{pipeline().globalParameters.env} |@{if(greater(activity('Check overall failed count').output.firstRow.counts,0),'FAIL','SUCCESS')}|CARE_SYNC MASTER RUN",
 						"type": "Expression"
 					}
 				}
