@@ -5,6 +5,10 @@
 			"email_receipient": {
 				"type": "string",
 				"value": "azurepractice1k@gmail.com"
+			},
+			"env": {
+				"type": "string",
+				"value": "DEV"
 			}
 		}
 	},
