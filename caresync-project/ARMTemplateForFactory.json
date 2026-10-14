@@ -733,6 +733,26 @@
 										],
 										"scriptBlockExecutionTimeout": "02:00:00"
 									}
+								},
+								{
+									"name": "Update failed in pipeline",
+									"type": "Fail",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline1",
+											"dependencyConditions": [
+												"Failed"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"message": {
+											"value": "Update pipeline",
+											"type": "Expression"
+										},
+										"errorCode": "500"
+									}
 								}
 							]
 						}
@@ -1337,6 +1357,23 @@
 											}
 										],
 										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								},
+								{
+									"name": "Update failed in Gold stage",
+									"type": "Fail",
+									"dependsOn": [
+										{
+											"activity": "Silver to gold",
+											"dependencyConditions": [
+												"Failed"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"message": "Update pipeline failed in Gold stage",
+										"errorCode": "500"
 									}
 								}
 							]
