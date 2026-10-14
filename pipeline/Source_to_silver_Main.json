@@ -179,6 +179,26 @@
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
 							}
+						},
+						{
+							"name": "Update failed in pipeline",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "Execute Pipeline1",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": {
+									"value": "Update pipeline",
+									"type": "Expression"
+								},
+								"errorCode": "500"
+							}
 						}
 					]
 				}
